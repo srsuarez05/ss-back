@@ -15,12 +15,12 @@ public class CustomMapper {
 
     public PageDto<CustomerResponseDto> createCustomerPageDto(Page<Customer> page) {
         PageDto<CustomerResponseDto> pageDto = new PageDto<>();
-        pageDto.setContent(page.getContent().stream().map(this::toDto).collect(toList()));
+        pageDto.setContent(page.getContent().stream().map(this::toCustomerDto).collect(toList()));
         if (page.hasNext()) {
-            pageDto.setNextPage(PAGE_CUSTOMERS + page.nextPageable().getPageNumber());
+            pageDto.setNextPage(page.nextPageable().getPageNumber());
         }
         if (page.hasPrevious()) {
-            pageDto.setPreviousPage(PAGE_CUSTOMERS + page.previousPageable().getPageNumber());
+            pageDto.setPreviousPage(page.previousPageable().getPageNumber());
         }
         pageDto.setItemsPerPage(page.getSize());
         pageDto.setNumberOfElements(page.getNumberOfElements());
@@ -29,22 +29,24 @@ public class CustomMapper {
         return pageDto;
     }
 
-    public CustomerResponseDto toDto(Customer customer){
+    public CustomerResponseDto toCustomerDto(Customer customer){
         return CustomerResponseDto.builder()
                 .id(customer.getId())
                 .firstname(customer.getFirstname())
                 .lastname(customer.getLastname())
                 .email(customer.getEmail())
                 .dateOfBirth(customer.getDateOfBirth())
+                .photo(customer.getPhoto())
                 .build();
     }
 
-    public Customer toEntity(CustomerRequestDto customerRequestDto){
+    public Customer toCustomerEntity(CustomerRequestDto customerRequestDto){
         return Customer.builder()
                 .firstname(customerRequestDto.getFirstname())
                 .lastname(customerRequestDto.getLastname())
                 .email(customerRequestDto.getEmail())
                 .dateOfBirth(customerRequestDto.getDateOfBirth())
+                .photo(customerRequestDto.getPhoto())
                 .build();
     }
 

@@ -7,7 +7,6 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,7 +17,7 @@ import java.time.LocalDateTime;
 @Builder
 public class CustomerRequestDto {
     @NotEmpty(message ="No puede estar vacio")
-    @Size(min=1, max=30, message="El tamaño tiene que estar entre 1 y 30")
+    @Size(min=1, max=30, message="El tamaño tiene que estar entre 1 y 30 caracteres")
     private String firstname;
 
     @NotEmpty(message ="No puede estar vacio")
@@ -30,4 +29,7 @@ public class CustomerRequestDto {
 
     @NotNull(message ="No puede estar vacio")
     private LocalDate dateOfBirth;
+
+    private String photo;
+
 }

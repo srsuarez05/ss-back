@@ -1,8 +1,8 @@
 package com.project.ssback.services;
 
-import com.project.ssback.dto.CustomerRequestDto;
 import com.project.ssback.entities.Customer;
-import com.project.ssback.exceptions.CustomerNotFoundException;
+import com.project.ssback.exceptions.ExistsEmailException;
+import com.project.ssback.exceptions.ResourceNotFoundException;
 import com.project.ssback.repositories.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
+
+import static com.project.ssback.utilities.Constants.CUSTOMER;
 
 @Service
 @RequiredArgsConstructor
@@ -34,32 +37,43 @@ public class CustomerServiceImpl implements ICustomerService{
     @Transactional(readOnly = true)
     public Customer findById(Long idCustomer) {
         return customerRepository.findById(idCustomer).orElseThrow(
-                () -> new CustomerNotFoundException(idCustomer));
+                () -> new ResourceNotFoundException(CUSTOMER, idCustomer));
     }
 
     @Override
     @Transactional
     public Customer save(Customer customer) {
+        if (customerRepository.existsByEmail(customer.getEmail())) {
+            throw new ExistsEmailException();
+        }
         return customerRepository.save(customer);
     }
 
     @Override
     @Transactional
-    public Customer update(Long idCustomer, Customer customer) {
-        Customer currentCustomer = customerRepository.findById(idCustomer).orElseThrow(
-                () -> new CustomerNotFoundException(idCustomer));
-        currentCustomer.setFirstname(customer.getFirstname());
-        currentCustomer.setLastname(customer.getLastname());
-        currentCustomer.setEmail(customer.getEmail());
-        currentCustomer.setDateOfBirth(customer.getDateOfBirth());
-        return currentCustomer;
+    public Customer update(Long idCustomer, Customer currentCustomer) {
+        Customer customer = customerRepository.findById(idCustomer).orElseThrow(
+                () -> new ResourceNotFoundException(CUSTOMER, idCustomer));
+
+        Optional<Customer> otherCustomer = customerRepository.findByEmail(currentCustomer.getEmail());
+        if(otherCustomer.isPresent() && otherCustomer.get().getId() != customer.getId()) {
+            throw new ExistsEmailException();
+        } else {
+            customer.setEmail(currentCustomer.getEmail());
+        }
+
+        customer.setFirstname(currentCustomer.getFirstname());
+        customer.setLastname(currentCustomer.getLastname());
+        customer.setDateOfBirth(currentCustomer.getDateOfBirth());
+        customer.setPhoto(currentCustomer.getPhoto());
+        return customer;
     }
 
     @Override
     @Transactional
     public void delete(Long idCustomer) {
         Customer customer = customerRepository.findById(idCustomer).orElseThrow(
-                () -> new CustomerNotFoundException(idCustomer));
+                () -> new ResourceNotFoundException(CUSTOMER, idCustomer));
         customerRepository.delete(customer);
     }
 }

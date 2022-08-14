@@ -18,4 +18,5 @@ public class CustomerResponseDto {
     private String lastname;
     private String email;
     private LocalDate dateOfBirth;
+    private String photo;
 }

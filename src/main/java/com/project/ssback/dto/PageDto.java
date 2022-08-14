@@ -13,7 +13,7 @@ public class PageDto<T> {
     private Long totalElements;
     private Integer numberOfElements;
     private Integer totalPages;
-    private String nextPage;
-    private String previousPage;
+    private Integer nextPage;
+    private Integer previousPage;
 
 }

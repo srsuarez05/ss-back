@@ -1,6 +1,6 @@
 package com.project.ssback.exceptions;
 
-import com.project.ssback.dto.ErrorDetails;
+import com.project.ssback.dto.ErrorDetailsDto;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,20 +18,26 @@ import java.util.Map;
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(CustomerNotFoundException.class)
-    public ResponseEntity<ErrorDetails> manageResourceNotFoundException(CustomerNotFoundException exception, WebRequest webRequest) {
-        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), exception.getMessage(), webRequest.getDescription(false));
-        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorDetailsDto> manageResourceNotFoundException(ResourceNotFoundException exception, WebRequest webRequest) {
+        ErrorDetailsDto errorDetailsDto = new ErrorDetailsDto(LocalDateTime.now(), exception.getMessage(), webRequest.getDescription(false));
+        return new ResponseEntity<>(errorDetailsDto, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorDetails> manageGlobalException(Exception exception,
-                                                              WebRequest webRequest) {
-        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), exception.getMessage(),
+    public ResponseEntity<ErrorDetailsDto> manageGlobalException(Exception exception, WebRequest webRequest) {
+        ErrorDetailsDto errorDetailsDto = new ErrorDetailsDto(LocalDateTime.now(), exception.getMessage(),
                 webRequest.getDescription(false));
-
-        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(errorDetailsDto, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(CustomException.class)
+    public ResponseEntity<ErrorDetailsDto> manageBlogException(CustomException exception, WebRequest webRequest) {
+        ErrorDetailsDto errorDetailsDto = new ErrorDetailsDto(LocalDateTime.now(), exception.getMessage(),
+                webRequest.getDescription(false));
+        return new ResponseEntity<>(errorDetailsDto, HttpStatus.BAD_REQUEST);
+    }
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         Map<String, String> errors = new HashMap<>();
