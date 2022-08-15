@@ -1,9 +1,10 @@
-package com.project.ssback.services;
+package com.project.ssback.services.impl;
 
 import com.project.ssback.entities.Customer;
 import com.project.ssback.exceptions.ExistsEmailException;
 import com.project.ssback.exceptions.ResourceNotFoundException;
 import com.project.ssback.repositories.CustomerRepository;
+import com.project.ssback.services.ICustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +18,7 @@ import static com.project.ssback.utilities.Constants.CUSTOMER;
 
 @Service
 @RequiredArgsConstructor
-public class CustomerServiceImpl implements ICustomerService{
+public class CustomerServiceImpl implements ICustomerService {
 
     private final CustomerRepository customerRepository;
 
@@ -66,6 +67,7 @@ public class CustomerServiceImpl implements ICustomerService{
         customer.setLastname(currentCustomer.getLastname());
         customer.setDateOfBirth(currentCustomer.getDateOfBirth());
         customer.setPhoto(currentCustomer.getPhoto());
+        customer.setRegion(currentCustomer.getRegion());
         return customer;
     }
 

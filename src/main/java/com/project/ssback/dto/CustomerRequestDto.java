@@ -1,5 +1,6 @@
 package com.project.ssback.dto;
 
+import com.project.ssback.entities.Region;
 import lombok.*;
 
 import javax.validation.constraints.Email;
@@ -31,5 +32,8 @@ public class CustomerRequestDto {
     private LocalDate dateOfBirth;
 
     private String photo;
+
+    @NotNull(message ="No puede estar vacio")
+    private Region region;
 
 }

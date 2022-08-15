@@ -1,10 +1,12 @@
 package com.project.ssback.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -17,7 +19,7 @@ import java.time.LocalDateTime;
 @Builder
 @Entity
 @Table(name="customers")
-public class Customer {
+public class Customer implements Serializable {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
@@ -39,5 +41,9 @@ public class Customer {
     private LocalDateTime createAt;
 
     private String photo;
+
+    @ManyToOne(fetch= FetchType.LAZY)
+    @JoinColumn(name="region_id")
+    private Region region;
 
 }

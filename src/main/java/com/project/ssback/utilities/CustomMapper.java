@@ -1,9 +1,8 @@
 package com.project.ssback.utilities;
 
-import com.project.ssback.dto.CustomerRequestDto;
-import com.project.ssback.dto.CustomerResponseDto;
-import com.project.ssback.dto.PageDto;
+import com.project.ssback.dto.*;
 import com.project.ssback.entities.Customer;
+import com.project.ssback.entities.Region;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
@@ -37,6 +36,7 @@ public class CustomMapper {
                 .email(customer.getEmail())
                 .dateOfBirth(customer.getDateOfBirth())
                 .photo(customer.getPhoto())
+                .region(customer.getRegion())
                 .build();
     }
 
@@ -47,6 +47,20 @@ public class CustomMapper {
                 .email(customerRequestDto.getEmail())
                 .dateOfBirth(customerRequestDto.getDateOfBirth())
                 .photo(customerRequestDto.getPhoto())
+                .region(customerRequestDto.getRegion())
+                .build();
+    }
+
+    public RegionResponseDto toRegionDto(Region region){
+        return RegionResponseDto.builder()
+                .id(region.getId())
+                .name(region.getName())
+                .build();
+    }
+
+    public Region toRegionEntity(RegionRequestDto regionRequestDto){
+        return Region.builder()
+                .name(regionRequestDto.getName())
                 .build();
     }
 

@@ -1,5 +1,7 @@
 package com.project.ssback.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.project.ssback.entities.Region;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -19,4 +21,6 @@ public class CustomerResponseDto {
     private String email;
     private LocalDate dateOfBirth;
     private String photo;
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private Region region;
 }

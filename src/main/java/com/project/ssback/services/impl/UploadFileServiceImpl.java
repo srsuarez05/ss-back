@@ -1,5 +1,6 @@
-package com.project.ssback.services;
+package com.project.ssback.services.impl;
 
+import com.project.ssback.services.IUploadFileService;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,7 @@ import java.nio.file.Paths;
 import java.util.UUID;
 
 @Service
-public class UploadFileServiceImpl implements IUploadFileService{
+public class UploadFileServiceImpl implements IUploadFileService {
     private final static String DIRECTORIO_UPLOAD = "C:\\ss-projects\\ss-back\\uploads";
     @Override
     public Resource cargar(String nombreFoto) throws MalformedURLException {
